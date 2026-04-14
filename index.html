@@ -1,7 +1,669 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Name — Game Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #111110;
+      --ink: #e8e4dc;
+      --muted: #6b6860;
+      --accent: #e8603f;
+      --line: #2a2a27;
+      --card: #1a1a18;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --mono: 'DM Mono', 'Courier New', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 4rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+
+    /* SECTIONS */
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 8rem 4rem;
+    }
+
+    section + section {
+      border-top: 1px solid var(--line);
+    }
+
+    /* HERO */
+    #hero {
+      padding-top: 14rem;
+      padding-bottom: 8rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: end;
+    }
+
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 6vw, 5rem);
+      line-height: 1.05;
+      font-weight: 400;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-right {
+      padding-bottom: 0.5rem;
+    }
+
+    .hero-desc {
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      max-width: 320px;
+      font-size: 13px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.75rem;
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      text-decoration: none;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--ink);
+      color: var(--bg);
+    }
+
+    .btn-ghost {
+      border-color: var(--line);
+      color: var(--muted);
+      margin-left: 1rem;
+    }
+
+    .btn-ghost:hover {
+      background: var(--card);
+      color: var(--ink);
+      border-color: var(--muted);
+    }
+
+    /* SECTION HEADERS */
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      margin-bottom: 3rem;
+      line-height: 1.1;
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+      font-size: 13px;
+    }
+
+    .about-text p:last-child { margin-bottom: 0; }
+
+    .skills-block {
+      border: 1px solid var(--line);
+      padding: 1.5rem;
+    }
+
+    .skills-block h4 {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .skill-tag {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      padding: 0.3rem 0.7rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      margin: 0.2rem 0.2rem 0.2rem 0;
+      color: var(--ink);
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      padding: 2rem;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+    }
+
+    .project-card:hover {
+      border-color: var(--muted);
+      transform: translateY(-2px);
+    }
+
+    .project-card.featured {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .project-thumb {
+      aspect-ratio: 16/9;
+      background: var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      overflow: hidden;
+    }
+
+    .project-thumb svg {
+      opacity: 0.3;
+    }
+
+    .project-meta {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .project-name {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+
+    .project-desc {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 1.25rem;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .project-tag {
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .project-link {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--ink);
+      padding-bottom: 1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .project-link:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* EXPERIENCE */
+    .experience-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .exp-item:first-child {
+      border-top: 1px solid var(--line);
+    }
+
+    .exp-date {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 0.15rem;
+    }
+
+    .exp-title {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin-bottom: 0.25rem;
+    }
+
+    .exp-org {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .exp-desc {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* CONTACT */
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .contact-text {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 2rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .contact-link-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+      color: var(--ink);
+      transition: padding-left 0.2s;
+    }
+
+    .contact-link-row:first-child { border-top: 1px solid var(--line); }
+
+    .contact-link-row:hover {
+      padding-left: 0.5rem;
+    }
+
+    .contact-link-row:hover .cl-arrow {
+      color: var(--accent);
+    }
+
+    .cl-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .cl-val {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .cl-arrow {
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+
+    /* FOOTER */
+    footer {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 4rem;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer span {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    /* FADE IN */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 700px) {
+      nav { padding: 1.25rem 1.5rem; }
+      .nav-links { gap: 1.25rem; }
+      section { padding: 6rem 1.5rem; }
+      #hero { grid-template-columns: 1fr; padding-top: 10rem; gap: 2rem; }
+      .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card.featured { grid-template-columns: 1fr; }
+      .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      footer { flex-direction: column; gap: 0.5rem; padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#hero">Your Name</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-left fade-in">
+      <p class="hero-label">Game Developer</p>
+      <h1 class="hero-name">Your<br><em>Name</em></h1>
+    </div>
+    <div class="hero-right fade-in" style="transition-delay: 0.15s">
+      <p class="hero-desc">Building interactive worlds and meaningful player experiences — from systems design to shipped titles.</p>
+      <a href="#projects" class="btn">View Projects</a>
+      <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label fade-in">About</p>
+    <h2 class="section-title fade-in">Who I Am</h2>
+    <div class="about-grid">
+      <div class="about-text fade-in">
+        <p>I'm a game developer with a passion for creating worlds that feel alive. My background in C++ gives me a strong foundation in performance-critical systems — whether that's physics, AI, or rendering pipelines.</p>
+        <p>I care about the intersection of technical craft and player experience. Great games aren't just well-engineered; they feel right from the first frame.</p>
+        <p>When I'm not shipping games, I'm prototyping mechanics, studying game design theory, or playing through whatever's interesting me this week.</p>
+      </div>
+      <div class="skills-block fade-in">
+        <h4>Tools &amp; Skills</h4>
+        <span class="skill-tag">C++</span>
+        <span class="skill-tag">Unreal Engine</span>
+        <span class="skill-tag">Unity</span>
+        <span class="skill-tag">HLSL / GLSL</span>
+        <span class="skill-tag">Game Physics</span>
+        <span class="skill-tag">AI / Behavior Trees</span>
+        <span class="skill-tag">Git / Perforce</span>
+        <span class="skill-tag">Gameplay Systems</span>
+        <span class="skill-tag">Level Design</span>
+        <span class="skill-tag">Blender</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <p class="section-label fade-in">Work</p>
+    <h2 class="section-title fade-in">Selected Projects</h2>
+
+    <div class="projects-grid">
+
+      <!-- Featured -->
+      <div class="project-card featured fade-in">
+        <div class="project-thumb">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+          </svg>
+        </div>
+        <div>
+          <p class="project-meta">Featured — 2024</p>
+          <h3 class="project-name">Project Title Goes Here</h3>
+          <p class="project-desc">A brief description of what makes this project interesting — the core mechanic, the challenge you solved, or the experience you wanted players to have.</p>
+          <div class="project-tags">
+            <span class="project-tag">Unreal Engine 5</span>
+            <span class="project-tag">C++</span>
+            <span class="project-tag">Multiplayer</span>
+          </div>
+          <a href="#" class="project-link">View project →</a>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="project-card fade-in">
+        <div class="project-thumb" style="margin-bottom: 1.5rem;">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        </div>
+        <p class="project-meta">2023</p>
+        <h3 class="project-name">Second Project</h3>
+        <p class="project-desc">Short description of this project and what you built or shipped.</p>
+        <div class="project-tags">
+          <span class="project-tag">Unity</span>
+          <span class="project-tag">C#</span>
+          <span class="project-tag">Procedural</span>
+        </div>
+        <a href="#" class="project-link">View project →</a>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="project-card fade-in">
+        <div class="project-thumb" style="margin-bottom: 1.5rem;">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+          </svg>
+        </div>
+        <p class="project-meta">2022</p>
+        <h3 class="project-name">Third Project</h3>
+        <p class="project-desc">Short description of this project — a jam game, prototype, or personal experiment.</p>
+        <div class="project-tags">
+          <span class="project-tag">Game Jam</span>
+          <span class="project-tag">C++</span>
+          <span class="project-tag">OpenGL</span>
+        </div>
+        <a href="#" class="project-link">View project →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <p class="section-label fade-in">Background</p>
+    <h2 class="section-title fade-in">Experience &amp; Education</h2>
+
+    <div class="experience-list">
+
+      <div class="exp-item fade-in">
+        <span class="exp-date">2023 — Present</span>
+        <div>
+          <h3 class="exp-title">Junior Game Developer</h3>
+          <p class="exp-org">Studio / Company Name</p>
+          <p class="exp-desc">What you worked on here — engine systems, specific features, team size, shipped titles.</p>
+        </div>
+      </div>
+
+      <div class="exp-item fade-in">
+        <span class="exp-date">Summer 2022</span>
+        <div>
+          <h3 class="exp-title">Gameplay Programmer Intern</h3>
+          <p class="exp-org">Another Studio</p>
+          <p class="exp-desc">Briefly describe what you worked on, tools used, and what you shipped or contributed to.</p>
+        </div>
+      </div>
+
+      <div class="exp-item fade-in">
+        <span class="exp-date">2019 — 2023</span>
+        <div>
+          <h3 class="exp-title">B.S. Computer Science</h3>
+          <p class="exp-org">Your University</p>
+          <p class="exp-desc">Focus on game development, real-time systems, or whatever relevant coursework applies.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="section-label fade-in">Contact</p>
+    <h2 class="section-title fade-in">Let's Talk</h2>
+
+    <div class="contact-inner">
+      <div class="fade-in">
+        <p class="contact-text">Open to full-time roles, contract work, and interesting collaborations. I'm especially excited about projects that push what games can feel like.</p>
+        <a href="mailto:you@email.com" class="btn">Send an Email</a>
+      </div>
+      <div class="contact-links fade-in">
+        <a href="mailto:you@email.com" class="contact-link-row">
+          <span class="cl-label">Email</span>
+          <span class="cl-val">you@email.com</span>
+          <span class="cl-arrow">→</span>
+        </a>
+        <a href="https://github.com/yourusername" target="_blank" class="contact-link-row">
+          <span class="cl-label">GitHub</span>
+          <span class="cl-val">yourusername</span>
+          <span class="cl-arrow">→</span>
+        </a>
+        <a href="https://linkedin.com/in/yourusername" target="_blank" class="contact-link-row">
+          <span class="cl-label">LinkedIn</span>
+          <span class="cl-val">yourusername</span>
+          <span class="cl-arrow">→</span>
+        </a>
+        <a href="https://itch.io/yourusername" target="_blank" class="contact-link-row">
+          <span class="cl-label">itch.io</span>
+          <span class="cl-val">yourusername</span>
+          <span class="cl-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2025 Your Name</span>
+    <span>Built with HTML &amp; CSS</span>
+  </footer>
+
+  <script>
+    // Fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
 </body>
 </html>
